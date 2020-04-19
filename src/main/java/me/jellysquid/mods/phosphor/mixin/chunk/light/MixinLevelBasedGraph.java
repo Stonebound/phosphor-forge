@@ -1,6 +1,6 @@
 package me.jellysquid.mods.phosphor.mixin.chunk.light;
 
-import it.unimi.dsi.fastutil.longs.Long2ByteMap;
+import it.unimi.dsi.fastutil.longs.Long2ByteFunction;
 import me.jellysquid.mods.phosphor.common.chunk.light.LevelBasedGraphExtended;
 import me.jellysquid.mods.phosphor.common.chunk.light.PendingUpdateListener;
 import net.minecraft.block.BlockState;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinLevelBasedGraph implements LevelBasedGraphExtended, PendingUpdateListener {
     @Shadow
     @Final
-    private Long2ByteMap propagationLevels;
+    private Long2ByteFunction propagationLevels;
 
     @Shadow
     protected abstract int getLevel(long id);
@@ -66,8 +66,8 @@ public abstract class MixinLevelBasedGraph implements LevelBasedGraphExtended, P
         return this.getEdgeLevel(sourceId, targetId, level);
     }
 
-    @Redirect(method = { "removeToUpdate", "processUpdates" }, at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/longs/Long2ByteMap;remove(J)B", remap = false))
-    private byte redirectRemovePendingUpdate(Long2ByteMap map, long key) {
+    @Redirect(method = { "removeToUpdate", "processUpdates" }, at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/longs/Long2ByteFunction;remove(J)B", remap = false))
+    private byte redirectRemovePendingUpdate(Long2ByteFunction map, long key) {
         byte ret = map.remove(key);
 
         if (ret != map.defaultReturnValue()) {
@@ -77,8 +77,8 @@ public abstract class MixinLevelBasedGraph implements LevelBasedGraphExtended, P
         return ret;
     }
 
-    @Redirect(method = "addToUpdate", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/longs/Long2ByteMap;put(JB)B", remap = false))
-    private byte redirectAddPendingUpdate(Long2ByteMap map, long key, byte value) {
+    @Redirect(method = "addToUpdate", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/longs/Long2ByteFunction;put(JB)B", remap = false))
+    private byte redirectAddPendingUpdate(Long2ByteFunction map, long key, byte value) {
         byte ret = map.put(key, value);
 
         if (ret == map.defaultReturnValue()) {

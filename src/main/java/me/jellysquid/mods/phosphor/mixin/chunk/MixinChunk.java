@@ -40,7 +40,7 @@ public abstract class MixinChunk {
     @Overwrite
     public Stream<BlockPos> getLightSources() {
         List<BlockPos> list = new ArrayList<>();
-        BlockPos.Mutable pos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
         int startX = this.pos.getXStart();
         int startZ = this.pos.getZStart();

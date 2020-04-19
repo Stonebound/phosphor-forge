@@ -32,7 +32,7 @@ public abstract class MixinLightEngine<M extends LightDataMap<M>, S extends Sect
         implements LightEngineExtended, PendingUpdateListener {
     @Shadow
     @Final
-    protected BlockPos.Mutable scratchPos;
+    protected BlockPos.MutableBlockPos scratchPos;
 
     @Shadow
     @Final
@@ -83,7 +83,7 @@ public abstract class MixinLightEngine<M extends LightDataMap<M>, S extends Sect
     // [VanillaCopy] method_20479
     @Override
     public VoxelShape getOpaqueShape(BlockState state, int x, int y, int z, Direction dir) {
-        if (state == null || !state.isTransparent()) {
+        if (state == null || !state.func_215691_g()) {
             return VoxelShapes.empty();
         }
 
@@ -98,7 +98,7 @@ public abstract class MixinLightEngine<M extends LightDataMap<M>, S extends Sect
 
             return VoxelShapes.empty();
         } else {
-            return VoxelShapes.getFaceShape(state.getRenderShape(this.chunkProvider.getWorld(), this.scratchPos.setPos(x, y, z)), dir);
+            return VoxelShapes.func_216387_a(state.getRenderShape(this.chunkProvider.getWorld(), this.scratchPos.setPos(x, y, z)), dir);
         }
     }
 

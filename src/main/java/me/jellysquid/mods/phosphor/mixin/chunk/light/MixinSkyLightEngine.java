@@ -120,7 +120,7 @@ public abstract class MixinSkyLightEngine extends LightEngine<SkyLightStorage.St
                 }
             }
         } else {
-            Direction altDir = Direction.byLong(toX - fromX, verticalOnly ? -1 : 0, toZ - fromZ);
+            Direction altDir = Direction.func_218383_a(toX - fromX, verticalOnly ? -1 : 0, toZ - fromZ);
 
             if (altDir == null) {
                 return 15;
